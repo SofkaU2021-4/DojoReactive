@@ -1,4 +1,3 @@
-/*
 package co.com.sofka.calendar.services;
 
 import co.com.sofka.calendar.collections.CourseTime;
@@ -16,6 +15,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -40,13 +40,74 @@ class SchedulerServiceTest {
         Program program = getProgramDummy();
 
         Mockito.when(repository.findById(programId)).thenReturn(Mono.just(program));
+
+
+
         //TODO: hacer una subscripción de el servicio reactivo
         Flux<ProgramDate> response = schedulerService.generateCalendar(programId, startDate);
 
-        Assertions.assertEquals(13, response.size());//TODO: hacer de otro modo
+
+
+        //nuevo
+        StepVerifier.create(response)
+                .expectNextMatches(programDate ->
+                        programDate.getDate().toString().equals("2022-01-03")
+                                && programDate.getCategoryName().equals("Principios")
+                )
+                .expectNextMatches(programDate ->
+                        programDate.getDate().toString().equals("2022-01-04")
+                                && programDate.getCategoryName().equals("Principios")
+                )
+                .expectNextMatches(programDate ->
+                        programDate.getDate().toString().equals("2022-01-05")
+                                && programDate.getCategoryName().equals("Bases")
+                )
+                .expectNextMatches(programDate ->
+                        programDate.getDate().toString().equals("2022-01-06")
+                                && programDate.getCategoryName().equals("Bases")
+                )
+                .expectNextMatches(programDate ->
+                        programDate.getDate().toString().equals("2022-01-07")
+                                && programDate.getCategoryName().equals("Fundamentos")
+                )
+                .expectNextMatches(programDate ->
+                        programDate.getDate().toString().equals("2022-01-10")
+                                && programDate.getCategoryName().equals("Fundamentos")
+                )
+                .expectNextMatches(programDate ->
+                        programDate.getDate().toString().equals("2022-01-11")
+                                && programDate.getCategoryName().equals("Fundamentos")
+                )
+                .expectNextMatches(programDate ->
+                        programDate.getDate().toString().equals("2022-01-12")
+                                && programDate.getCategoryName().equals("Fundamentos")
+                )
+                .expectNextMatches(programDate ->
+                        programDate.getDate().toString().equals("2022-01-13")
+                                && programDate.getCategoryName().equals("Fundamentos avazandos")
+                )
+                .expectNextMatches(programDate ->
+                        programDate.getDate().toString().equals("2022-01-14")
+                                && programDate.getCategoryName().equals("Fundamentos avazandos")
+                )
+                .expectNextMatches(programDate ->
+                        programDate.getDate().toString().equals("2022-01-17")
+                                && programDate.getCategoryName().equals("Fundamentos avazandos")
+                )
+                .expectNextMatches(programDate ->
+                        programDate.getDate().toString().equals("2022-01-18")
+                                && programDate.getCategoryName().equals("Fundamentos avazandos")
+                )
+                .expectNextMatches(programDate ->
+                        programDate.getDate().toString().equals("2022-01-19")
+                                && programDate.getCategoryName().equals("Fundamentos avazandos")
+                )
+                .verifyComplete();
         Assertions.assertEquals(getSnapResult(), new Gson().toJson(response));//TODO: hacer de otro modo
         Mockito.verify(repository).findById(programId);
     }
+
+
 
     @Test
     void programNoFound() {
@@ -87,4 +148,4 @@ class SchedulerServiceTest {
     }
 
 
-}*/
+}
