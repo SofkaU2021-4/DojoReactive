@@ -103,7 +103,8 @@ class SchedulerServiceTest {
                                 && programDate.getCategoryName().equals("Fundamentos avazandos")
                 )
                 .verifyComplete();
-        Assertions.assertEquals(getSnapResult(), new Gson().toJson(response));//TODO: hacer de otro modo
+        StepVerifier.create(response).expectNextCount(13).verifyComplete();//TODO: hacer de otro modo
+
         Mockito.verify(repository).findById(programId);
     }
 
